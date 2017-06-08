@@ -1,0 +1,195 @@
+/*
+ * Start Bootstrap - Heroic Features (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+nav ul.nav.navbar-nav li a{
+	text-align: center;
+}
+
+img.viewimage{
+	width: 800px;
+	height: 500px;
+}
+
+h3.title.pull-left{
+	margin-bottom: 20px;
+}
+
+h2.title{
+	text-align: center;
+	margin-bottom: 30px;
+
+}
+
+div.col-md-6.details{
+	line-height: 40px;
+}
+
+p.info{
+
+	font-size: 0.8em;
+	font-family: "Arial Narrow";
+	text-align: left;
+	line-height: 25px;
+	letter-spacing: 1px;
+
+}
+
+
+i.fa.fa-facebook.fa-2x{
+	font-size: 1.2em;
+	padding: 5px;
+	margin-top: 3px;
+	margin-bottom: 5px;
+	color: black;
+	float: none !important;
+}
+i.fa.fa-instagram.fa-2x{
+	font-size: 1.3em;
+	margin-top: 3px;
+	margin-bottom: 5px;
+	padding: 5px;
+	color: black;
+	float: none !important;
+}
+i.fa.fa-twitter.fa-2x{
+	font-size: 1.2em;
+	margin-top: 3px;
+	margin-bottom: 5px;
+	padding: 5px;
+	color: black;
+	float: none !important;
+}
+
+.navbar-nav>li>a{
+	padding: 15px !important;
+	text-align: center;
+}
+
+a.btn.btn-default.col-md-2.search{
+	float: none !important;
+	font-size: 1.2em;
+	font-family: "Arial Rounded MT Bold";
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+a.btn.btn-default.register{
+	float: right;
+	margin-right: 5px;
+	margin-top: 15px;
+	font-family: "Arial Rounded MT Bold"
+	
+}
+
+div.panel-heading{
+	text-align: center;
+	font-size: 1.5em;
+	font-family: "Arial Rounded MT Bold"
+}
+
+div.panel.panel-inverse{
+	border: 1px solid #ddd;
+	margin-left: 0px !important;
+	
+}
+
+a.logo{
+	/*left: 12%;*/
+	position: fixed;
+	top: -40px;
+}
+
+nav ul.nav.navbar-nav{
+	text-align: center;
+
+}
+
+select.selectpicker.form-control{
+	margin-bottom: 20px;
+}
+
+
+
+img.bannerhome{
+	/*width: 1000px;*/
+	margin-bottom: 30px;
+	margin-top: 30px;
+	/*margin-left: 50px;
+	margin-right: 50px;*/
+	text-align: center;
+}
+.bannerhome
+{
+	text-align: center;
+}
+
+.hero-spacer {
+    margin-top: 50px;
+}
+
+.hero-feature {
+    margin-bottom: 30px;
+}
+
+footer.footer-inverse.footer-fixed{
+	background-color: #caeefb;
+	height: 30px;
+	margin-bottom: 0px;
+}
+
+div.footerdiv{
+	text-align: center;
+	left: 25%;
+	padding: 20px;
+	font-size: 1em;
+	font-family: "Arial Rounded MT Bold";
+	color: black;
+
+}
+
+.col-md-12.profile
+{
+	border: solid 1px black;
+	border-radius: 3px;
+}
+
+.col-md-12.pic
+{
+	text-align: center;
+}
+
+
+footer.footer.footer-fixed-bottom{
+    width: 100%;
+    background-color: #514841;
+    height: 70px; 
+
+
+
+}
+
+nav.navbar.navbar-inverse.navbar-fixed-top div.container{
+	height: 70px;
+}
+
+nav.navbar.navbar-inverse.navbar-fixed-top{
+    background-color: #514841;
+    border-radius: 0px;
+    border: 0px;
+}
+
+nav.navbar.navbar-inverse.navbar-fixed{
+	background-color: #caeefb;
+	border-radius: 0px;
+	border: 0px;
+	color: black;
+	text-align: center;
+}
