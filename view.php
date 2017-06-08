@@ -106,7 +106,15 @@ require 'partials/navigation.php';
               <strong>Location:</strong>
             </div>
             <div class="col-md-6 details">
-              <?= $viewListing['location'] ?>
+              <?php if ($viewListing['location'] == 0): ?>
+
+              North Island
+
+              <?php else: ?>
+
+              South Island
+
+              <?php endif; ?>
             </div>
 
 
@@ -115,7 +123,15 @@ require 'partials/navigation.php';
               <strong>Age:</strong>
             </div>
             <div class="col-md-6 details">
-              <?= $viewListing['age'] ?>
+              <?php if ($viewListing['age'] == 0): ?>
+
+              Puppy
+
+              <?php else: ?>
+
+              Adult
+
+              <?php endif; ?>
             </div>
 
 

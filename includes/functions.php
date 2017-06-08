@@ -493,7 +493,7 @@ function deleteComment($dbh, $id) {
 }
 
 
-function getPaginatedListings($dbh, $perPage = 8) // Set a default amount of projects to show per page.
+function getPaginatedListings($dbh, $perPage = 4) // Set a default amount of projects to show per page.
 {
     // Find out how many items are in the table
     $total = $dbh->query('SELECT COUNT(*) FROM listings')->fetchColumn();
@@ -527,7 +527,7 @@ function getPaginatedListings($dbh, $perPage = 8) // Set a default amount of pro
     $paginationLinks = '<div id="paging"><p>' . $prevlink . ' Page ' . $page . ' of ' . $pages . ' pages, displaying ' . $start . '-' . $end . ' of ' . $total . ' results ' . $nextlink . ' </p></div>';
 
     // Prepare the paged query
-    $stmt = $dbh->prepare('SELECT listings_id, title, content, image, location_id, age_id, gender, desexed, vaccinated, wormed, flead, registered, microchipped, created_at, updated_at, user_id, first_name, last_name, email, admin FROM listings INNER JOIN users ON listings.user_id = users.id ORDER BY created_at DESC LIMIT :limit OFFSET :offset');
+    $stmt = $dbh->prepare('SELECT listings.id, title, content, image, listings.location, age, gender, desexed, vaccinated, wormed, flead, registered, microchipped, created_at, updated_at, user_id, first_name, last_name, email, admin FROM listings INNER JOIN users ON listings.user_id = users.id ORDER BY created_at DESC LIMIT :limit OFFSET :offset');
 
     // Bind the query params
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);

@@ -1,7 +1,11 @@
 <?php
 require 'includes/config.php';
 
-$listings = getListings($dbh);
+// $listings = getListings($dbh);
+// 
+$data = getPaginatedListings($dbh);
+            
+$listings = $data['listings'];
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -43,6 +47,7 @@ require 'partials/navigation.php';
 
         <!-- Page Features -->
         <div class="row text-center">
+        <div class="searchbar">
 
         <div class="row search">
           <div class="col-xs-4">
@@ -78,7 +83,9 @@ require 'partials/navigation.php';
           </div>
           <a href="index.php" class="btn btn-default col-md-2 search">Search</a>
         </div>
-
+        </div>
+        </div>
+        <div class="row">
             <!-- Start foreach loop here -->
             <?php foreach ($listings as $listing):?>
 
@@ -95,9 +102,15 @@ require 'partials/navigation.php';
                 </div>
             </div>
 
-            <!-- End for each loop here --><?php endforeach; ?>
+            <!-- End for each loop here -->
+          <?php endforeach; ?>
 
-
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+            
+            <?= $data['paginationLinks'] ?>
+          </div>
         </div>
         
 <?php
