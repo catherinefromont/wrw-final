@@ -19,41 +19,29 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
     
         <div>
+
+        <ul class="nav navbar-nav navbar-right">
+        <?php if(loggedIn()): ?>
+
+                <li class="hidden-md hidden-lg"><a href="logout.php" class="btn btn-default btn-sm register">Logout</a></li>
+
+                <li><a href="dashboard.php" class="btn btn-default btn-sm register">Add New Post</a></li>
+
+                <li class="dropdown hidden-xs hidden-sm">
+                  <a href="#" class="dropdown-toggle btn btn-default btn-sm register" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="nav-profile-photo" src="<?= get_gravatar($_SESSION['email']) ?>" alt="gravatar">
+                   <?= $_SESSION['first_name'] ?> <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="logout.php">Logout</a></li>
+                  </ul>
+                </li>
+
+                <?php else: ?>
+                    <li><a href="register.php" class="btn btn-default btn-sm register" aria-hidden="true">Register</a></li>
+                    <li><a href="login.php" class="btn btn-default btn-sm register" aria-hidden="true">Login</a></li>
+                <?php endif; ?>
+              </ul>
        
-            <ul class="nav navbar-nav navbar-right">
-                <?php if(loggedIn()): ?>
 
-
-                    <li>
-                    <div class="dropdown">
-                      <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="nav-profile-photo" src="<?= get_gravatar($_SESSION['email']) ?>" alt="gravatar">
-                        <?= $_SESSION['first_name'] ?>
-                        
-                        <span class="caret"></span>
-                      </a>
-
-                       <ul role="menu" class="dropdown-menu panel">
-
-                          <li>
-                              <a href="index.php" class="item" aria-hidden="true">Home</a>
-                          </li>
-                          <li>
-                              <a href="dashboard.php" class="item" aria-hidden="true">Add New Post</a>
-                          </li>
-                          <li>
-                              <a href="logout.php" class="item" aria-hidden="true">Logout</a>
-                          </li>
-                      </ul>
-
-                    </div>
-                    </li>
-           
-            <?php else: ?>
-                <li><a href="register.php" class="btn btn-default btn-sm register" aria-hidden="true">Register</a></li>
-                <li><a href="login.php" class="btn btn-default btn-sm register" aria-hidden="true">Login</a></li>
-            <?php endif; ?>
-            </ul>
         </div>
         
     </div>
