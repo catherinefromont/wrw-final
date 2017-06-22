@@ -109,15 +109,7 @@ require 'partials/navigation.php';
               <strong>Location:</strong>
             </div>
             <div class="col-md-6 details">
-              <?php if ($viewListing['location'] == 0): ?>
-
-              North Island
-
-              <?php else: ?>
-
-              South Island
-
-              <?php endif; ?>
+              <?= $viewListing['name'] ?>
             </div>
 
 

@@ -71,7 +71,7 @@ require 'partials/navigation.php';
               <input id="first_name" type="text" class="form-control" name="first_name" value="" autofocus="">
             </div><br>
             <br>
-            <span class="pull-right text-center text-danger"><?= !empty($errors['first_name']) ? $errors['first_name'] : ''  ?></span>
+            <span class="pull-right register-error-message text-danger error"><?= !empty($errors['first_name']) ? $errors['first_name'] : ''  ?></span>
           </div>
 
           <div class="form-group">
@@ -81,7 +81,7 @@ require 'partials/navigation.php';
               <input id="last_name" type="text" class="form-control" name="last_name" value="" autofocus="">
             </div><br>
             <br>
-            <span class=" pull-right text-danger error"><?= !empty($errors['last_name']) ? $errors['last_name'] : ''  ?></span>
+            <span class=" pull-right register-error-message text-danger error"><?= !empty($errors['last_name']) ? $errors['last_name'] : ''  ?></span>
           </div>
 
 
@@ -92,7 +92,7 @@ require 'partials/navigation.php';
               <input id="email" type="text" class="form-control" name="email" value="" >
             </div><br>
             <br>
-            <span class="pull-right text-danger error"><?= !empty($errors['email']) ? $errors['email'] : ''  ?></span>
+            <span class="pull-right register-error-message text-danger error"><?= !empty($errors['email']) ? $errors['email'] : ''  ?></span>
           </div>
 
           <div class="form-group">
@@ -102,7 +102,7 @@ require 'partials/navigation.php';
               <input id="password" type="password" class="form-control" name="password" >
             </div><br>
             <br>
-            <span class="pull-right text-danger error"><?= !empty($errors['password']) ? $errors['password'] : ''  ?></span>
+            <span class="pull-right register-error-message text-danger error"><?= !empty($errors['password']) ? $errors['password'] : ''  ?></span>
           </div>
 
           <div class="form-group">
@@ -111,7 +111,7 @@ require 'partials/navigation.php';
             <div class="col-md-6">
               <input id="password-confirm" type="password" class="form-control" name="password-confirm" >
             </div>
-            <span class="pull-right text-danger error"><?= !empty($errors['password-confirm']) ? $errors['password-confirm'] : ''  ?></span>
+            <span class="pull-right register-error-message text-danger error"><?= !empty($errors['password-confirm']) ? $errors['password-confirm'] : ''  ?></span>
           </div>
 
           <div class="form-group">

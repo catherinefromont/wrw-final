@@ -9,8 +9,11 @@ body {
     min-width: 400px;
 }
 
-span.error{
+.register-error-message{
 	text-align: center;
+	float: right;
+	margin-right: 20px !important;
+
 }
 
 /*button.navbar-toggle.first{

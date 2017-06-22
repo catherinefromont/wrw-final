@@ -28,17 +28,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     redirect('edit.php?id=' . $id);
   }
 
-  if ($_POST["_method"] == "search") {
-    die(var_dump($_POST));
+}
 
-    $location = e($_POST['location']);
-    $gender = e($_POST['gender']);
-    $age = e($_POST['age']);
+$location = (isset($_GET['location']))?e($_GET['location']):'';
+$gender = (isset($_GET['gender']))?e($_GET['gender']):'';
+$age = (isset($_GET['age']))?e($_GET['age']):'';
 
-    $data = getPaginatedSearchListings($dbh, 8, $location, $gender, $age);   
 
-  }
+if(!empty($location) || !empty($gender) || !empty($age) ){
 
+    $data = getPaginatedSearchListings($dbh, 8, $location, $gender, $age);  
+}else{
+
+  $data = getPaginatedListings($dbh, 8);
 }
 
 
@@ -67,14 +69,14 @@ require 'partials/navigation.php';
   <div class="row text-center">
 
 
-    <form method="POST" action="index.php">
+    <form method="GET" action="index.php">
       <div class="col-xs-4">
         <div class="form-group">
           <h5 class="location">Location:</h5>
           <select name="location" class="selectpicker form-control">
             <option value="">No Preference</option>
             <?php foreach($locationOptions as $option):?>
-              <option value="<?= $option['id'] ?>"><?= $option['name'] ?></option>
+              <option value="<?= $option['id'] ?>" <?=(!empty($_GET['location']) && $_GET['location'] == $option['id'])?'selected':'';?>><?= $option['name'] ?></option>
             <?php endforeach; ?>
 
           </select>
@@ -85,9 +87,9 @@ require 'partials/navigation.php';
         <div class="form-group">
           <h5 class="gender">Gender:</h5>
           <select name="gender" class="selectpicker form-control">
-              <option value="">No Preference</option>
-             <option value="0">Male</option>
-             <option value="1">Female</option>
+              <option value="" <?=(empty($_GET['age']))?'selected':'';?>>No Preference</option>
+             <option value="2" <?=(!empty($_GET['gender']) && $_GET['gender'] == 2)?'selected':'';?>>Male</option>
+             <option value="1" <?=(!empty($_GET['gender']) && $_GET['gender'] == 1)?'selected':'';?>>Female</option>
          
          </select>
        </div>
@@ -97,15 +99,13 @@ require 'partials/navigation.php';
         <h5 class="age">Age:</h5>
         <select name="age" class="selectpicker form-control">
 
-          <option value="">No Preference</option>
-         <option value="0">Puppy</option>
-         <option value="1">Adult</option>
+          <option value="" <?=(empty($_GET['age']))?'selected':'';?>>No Preference</option>
+         <option value="2" <?=(!empty($_GET['age']) && $_GET['age'] == 2)?'selected':'';?>>Puppy</option>
+         <option value="1" <?=(!empty($_GET['age']) && $_GET['age'] == 1)?'selected':'';?>>Adult</option>
 
         </select>
       </div>
     </div>
-
-    <input name="_method" type="hidden" value="search">
     
     <div class="col-md-12 text-center">
       <button type="submit" class="btn btn-default col-md-2 search">Search</button>
@@ -114,6 +114,9 @@ require 'partials/navigation.php';
   <!-- </div> -->
 
 </div>
+
+<?php if (!empty($listings)): ?>
+
 <?php foreach ($listings as $key => $listing):?>
   <?php if (($key + 1) % 4 === 0 || $key === 0): ?>
 
@@ -122,9 +125,13 @@ require 'partials/navigation.php';
    <!-- Start foreach loop here -->
 
    <div class="col-md-3 col-sm-6 hero-feature">
+
     <div class="thumbnail">
+
       <img alt="listings" class="img-responsive imgindex" src="<?= $listing['image'] ?>">
+
       <div class="caption">
+
         <h3><?= $listing['title'] ?></h3>
         <p><?= substr ($listing['content'], 0, 50) ?>...</p>
         <a href="view.php?id=<?= $listing['id'] ?>" class="btn btn-default">More Info</a>
@@ -165,6 +172,8 @@ require 'partials/navigation.php';
 <?php endforeach; ?>
 
 
+
+
 <div class="row">
   <div class="pagination col-md-12 text-center">
 
@@ -172,7 +181,14 @@ require 'partials/navigation.php';
     <?= $data['paginationLinks'] ?>  
   </div>
 </div>
+<?php else: ?>
 
+  <div class="row">
+    <div class="pagination col-md-12 text-center">
+    No Listings found.
+    </div>
+  </div>
+  <?php endif; ?>
 
 </div>
 

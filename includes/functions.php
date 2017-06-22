@@ -479,7 +479,13 @@ function deleteListing($id, $dbh) {
 
 function viewListing($id, $dbh) {
     
-    $sth = $dbh->prepare("SELECT * FROM listings WHERE id = :id LIMIT 1");
+    $sth = $dbh->prepare("SELECT listings.id, listings.title, listings.content, listings.image, listings.location, listings.age, listings.gender, listings.desexed, listings.vaccinated, listings.wormed, listings.flead, listings.registered, listings.microchipped, listings.created_at, listings.updated_at, location.name FROM listings LEFT JOIN location ON listings.location = location.id WHERE listings.id = :id LIMIT 1");
+
+
+
+
+
+
     $sth->bindParam(':id', $id, PDO::PARAM_STR);
     $sth->execute();
 
@@ -555,11 +561,38 @@ function deleteComment($dbh, $id) {
 function getPaginatedSearchListings($dbh, $perPage = 8, $location, $gender, $age) // Set a default amount of projects to show per page.
 {
 
-    if (empty($location)) {
-      # code...
+    $sql = 'SELECT COUNT(*) FROM listings WHERE 1=1';
+
+    if (!empty($location)) {
+      $sql .= ' AND location = :location';
+
     }
+    if (!empty($gender)) {
+      $sql .= ' AND gender = :gender';
+
+    }
+    if (!empty($age)) {
+      $sql .= ' AND age = :age';
+    }
+
+    $stmt = $dbh->prepare($sql);
+
+
+    if (!empty($location)) {
+      $stmt->bindParam(':location', $location, PDO::PARAM_INT);
+
+    }
+    if (!empty($gender)) {
+      $stmt->bindParam(':gender', $gender, PDO::PARAM_INT);
+
+    }
+    if (!empty($age)) {
+      $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+    }
+
     // Find out how many items are in the table
-    $total = $dbh->query('SELECT COUNT(*) FROM listings')->fetchColumn();
+    $total = $stmt->execute();
+    $total = $stmt->fetch()[0];
 
     // How many items to list per page
     $limit = $perPage;
@@ -590,9 +623,47 @@ function getPaginatedSearchListings($dbh, $perPage = 8, $location, $gender, $age
     $paginationLinks = '<div id="paging"><p>' . $prevlink . ' Page ' . $page . ' of ' . $pages . ' pages, displaying ' . $start . '-' . $end . ' of ' . $total . ' results ' . $nextlink . ' </p></div>';
 
     // Prepare the paged query
-    $stmt = $dbh->prepare('SELECT location.name, gender.name, age.name FROM location WHERE 1 = 1 AND location = :location DESC LIMIT :limit OFFSET :offset');
+    
+    $sql = 'SELECT listings.id, title, content, image, listings.location, age, gender, desexed, vaccinated, wormed, flead, registered, microchipped, created_at, updated_at, user_id, first_name, last_name, email, admin FROM listings INNER JOIN users ON listings.user_id = users.id WHERE 1 = 1';
+
+
+
+    if (!empty($location) || $location == '0') {
+      $sql .= ' AND location = :location';
+
+    }
+    if (!empty($gender) || $gender == '0') {
+      $sql .= ' AND gender = :gender';
+
+    }
+    if (!empty($age) || $age == '0') {
+      $sql .= ' AND age = :age';
+    }
+
+
+    $sql .= ' ORDER BY created_at DESC LIMIT :limit OFFSET :offset';
+
+    $stmt = $dbh->prepare($sql);
+
+
+    if (!empty($location)) {
+      $stmt->bindParam(':location', $location, PDO::PARAM_INT);
+
+    }
+    if (!empty($gender)) {
+      $stmt->bindParam(':gender', $gender, PDO::PARAM_INT);
+
+    }
+    if (!empty($age)) {
+      $stmt->bindParam(':age', $age, PDO::PARAM_INT);
+    }
+
+    // $stmt->bindParam(':location', $location, PDO::PARAM_STR);
+    // $stmt->bindParam(':gender', $gender, PDO::PARAM_INT);
+    // $stmt->bindParam(':age', $age, PDO::PARAM_INT);
 
     // Bind the query params
+
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
     $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
