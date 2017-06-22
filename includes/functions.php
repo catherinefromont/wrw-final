@@ -63,13 +63,31 @@ function validateContent($content) {
     return "Content is required";
   }
   
-  else if(strlen ($content) >= 200){
-    return "Content cannot be longer than 200 characters";
+  return false;
+}
+
+
+function validateName($name) {
+
+  if (empty($name)) {
+    return "Name is required";
+  }
+  
+  else if(strlen ($name) >= 40){
+    return "Name cannot be longer than 40 characters";
   }
   
   return false;
 }
 
+function validatePhone($phone) {
+
+  if (empty($phone)) {
+    return "Phone Number is required";
+  }
+  
+  return false;
+}
 
 
 
@@ -306,21 +324,32 @@ function addMessage($type, $message) {
 // -----------------------------------------------------------------------------
 
 
-// function addListing($dbh, $title, $content, $userid) {
+function addListing($dbh, $title, $content, $image, $location, $age, $gender, $desexed, $vaccinated, $wormed, $flead, $registered, $microchipped) {
 
 
-//     $sth = $dbh->prepare("INSERT INTO topics VALUES (NULL, :title, :content, :user_id, NOW(), NOW())");
+    $sth = $dbh->prepare("INSERT INTO listings VALUES (NULL, :title, :content, :image, :location, :age, :gender, :desexed,  :vaccinated, :wormed, :flead, :registered, :microchipped, :user_id, NOW(), NOW())");
 
 
 
-//     $sth->bindValue(':title', $title, PDO::PARAM_STR);
-//     $sth->bindValue(':content', $content , PDO::PARAM_STR);
-//     $sth->bindValue(':user_id', $userid , PDO::PARAM_INT);
+    $sth->bindValue(':title', $title, PDO::PARAM_STR);
+    $sth->bindValue(':content', $content , PDO::PARAM_STR);
+    $sth->bindValue(':image', $image, PDO::PARAM_STR);
+    $sth->bindValue(':location', $location, PDO::PARAM_STR);
+    $sth->bindValue(':age', $age, PDO::PARAM_STR);
+    $sth->bindValue(':gender', $gender, PDO::PARAM_INT);
+    $sth->bindValue(':desexed', $desexed, PDO::PARAM_INT);
+    $sth->bindValue(':vaccinated', $vaccinated, PDO::PARAM_INT);
+    $sth->bindValue(':wormed', $wormed, PDO::PARAM_INT);
+    $sth->bindValue(':flead', $flead, PDO::PARAM_INT);
+    $sth->bindValue(':registered', $registered, PDO::PARAM_INT);
+    $sth->bindValue(':microchipped', $microchipped, PDO::PARAM_INT);
+    $sth->bindValue(':user_id', $_SESSION['id'] , PDO::PARAM_INT);
 
 
-//     $success = $sth->execute();    
-//     return $success;
-// }
+
+    $success = $sth->execute();    
+    return $success;
+}
 
 
 
@@ -340,6 +369,35 @@ function getUser($dbh, $email) {
 
   if (!empty($row)) {
     return $row;
+  }
+  return false;
+}
+
+function getLocationOptions($dbh){
+
+  $sth = $dbh->prepare('SELECT * FROM `location`');
+  $sth->execute();
+
+  $options = $sth->fetchAll();
+
+  if (!empty($options)) {
+    return $options;
+  }
+  return false;
+}
+
+
+
+
+function getAgeOptions($dbh){
+
+  $sth = $dbh->prepare('SELECT * FROM `age`');
+  $sth->execute();
+
+  $options = $sth->fetchAll();
+
+  if (!empty($options)) {
+    return $options;
   }
   return false;
 }
@@ -451,7 +509,7 @@ function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts
 // get Comments functions
 // -----------------------------------------------------------------------------
 function getComments($id, $dbh) {
-  $sth = $dbh->prepare("SELECT comments.id, comments.content, comments.listing_id, comments.user_id, comments.updated_at, comments.created_at, users.first_name, users.first_name users.email  FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.listing_id = :id ORDER BY comments.created_at DESC");
+  $sth = $dbh->prepare("SELECT comments.id, comments.content, comments.listing_id, comments.user_id, comments.updated_at, comments.created_at, users.first_name, users.last_name, users.email  FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.listing_id = :id ORDER BY comments.created_at DESC");
 
     
   $sth->bindParam(':id', $id, PDO::PARAM_STR);
@@ -470,7 +528,7 @@ function getComments($id, $dbh) {
 
 
 
-function addComment($dbh, $topic_id, $content) {
+function addComment($dbh, $listing_id, $content) {
  $sth = $dbh->prepare("INSERT INTO comments (content, user_id, listing_id, created_at, updated_at) VALUES (:content, :user_id, :listing_id, NOW(), NOW())");
  $sth->bindParam(':content', $content, PDO::PARAM_STR);
  $sth->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
@@ -493,7 +551,69 @@ function deleteComment($dbh, $id) {
 }
 
 
-function getPaginatedListings($dbh, $perPage = 4) // Set a default amount of projects to show per page.
+
+function getPaginatedSearchListings($dbh, $perPage = 8, $location, $gender, $age) // Set a default amount of projects to show per page.
+{
+
+    if (empty($location)) {
+      # code...
+    }
+    // Find out how many items are in the table
+    $total = $dbh->query('SELECT COUNT(*) FROM listings')->fetchColumn();
+
+    // How many items to list per page
+    $limit = $perPage;
+
+    // How many pages will there be
+    $pages = ceil($total / $limit);
+
+    // What page are we currently on?
+    $page = min($pages, filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, array(
+        'options' => array(
+            'default'   => 1,
+            'min_range' => 1,
+        ),
+    )));
+    // Calculate the offset for the query
+    $offset = ($page - 1)  * $limit;
+
+    // Some information to display to the user
+    $start = $offset + 1;
+    $end = min(($offset + $limit), $total);
+
+    // The "back" link
+    $prevlink = ($page > 1) ? '<a class="btn btn-default" href="?page=1" title="First page">&laquo;</a> <a class="btn btn-default" href="?page=' . ($page - 1) . '" title="Previous page">&lsaquo;</a>' : '<span class="disabled btn btn-default">&laquo;</span> <span class="disabled btn btn-default">&lsaquo;</span>';
+
+    // The "forward" link
+    $nextlink = ($page < $pages) ? '<a class="btn btn-default" href="?page=' . ($page + 1) . '" title="Next page">&rsaquo;</a> <a class="btn btn-default" href="?page=' . $pages . '" title="Last page">&raquo;</a>' : '<span class="disabled btn btn-default">&rsaquo;</span> <span class="disabled btn btn-default">&raquo;</span>';
+
+    $paginationLinks = '<div id="paging"><p>' . $prevlink . ' Page ' . $page . ' of ' . $pages . ' pages, displaying ' . $start . '-' . $end . ' of ' . $total . ' results ' . $nextlink . ' </p></div>';
+
+    // Prepare the paged query
+    $stmt = $dbh->prepare('SELECT location.name, gender.name, age.name FROM location WHERE 1 = 1 AND location = :location DESC LIMIT :limit OFFSET :offset');
+
+    // Bind the query params
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Get the results of the query
+    $result = $stmt->fetchAll();
+
+    // If there are no rows, set the variable to false
+    if (empty($result)) {
+        $result = false;
+    }
+
+    // Return the results (projects) along with the pagination links via an associative array
+    return ['listings' => $result, 'paginationLinks' => $paginationLinks];
+}
+
+
+
+
+
+function getPaginatedListings($dbh, $perPage = 8) // Set a default amount of projects to show per page.
 {
     // Find out how many items are in the table
     $total = $dbh->query('SELECT COUNT(*) FROM listings')->fetchColumn();

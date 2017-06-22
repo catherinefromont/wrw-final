@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['admin'] = $user['admin'];
        
         
-        addMessage("success", 'Congratulations, You are now logged in');
+        addMessage("success", 'Congratulations, you are now logged in');
 
         redirect('index.php');
     }
@@ -72,7 +72,7 @@ require 'partials/navigation.php';
                                 <input id="email" type="text" class="form-control" name="email" autofocus="">
 
                             </div>
-                            <span class="text-danger"><?= !empty($errors['email']) ? $errors['email'] : ''  ?></span>
+                            <span class="text-danger error"><?= !empty($errors['email']) ? $errors['email'] : ''  ?></span>
                         </div>
 
 
@@ -82,12 +82,12 @@ require 'partials/navigation.php';
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password" >
                             </div>
-                            <span class="text-danger"><?= !empty($errors['password']) ? $errors['password'] : ''  ?></span>
+                            <span class="text-danger error"><?= !empty($errors['password']) ? $errors['password'] : ''  ?></span>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-inverse">
+                                <button type="submit" class="btn btn-default col-md-3 search">
                                     Login
                                 </button>
                             </div>

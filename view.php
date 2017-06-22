@@ -46,7 +46,7 @@ else{
 
 
 $viewListing = viewListing($_GET['id'], $dbh);
-// $comments = getComments($_GET['id'], $dbh);
+$comments = getComments($_GET['id'], $dbh);
 
 $page['title'] = 'View';
 
@@ -65,9 +65,10 @@ require 'partials/navigation.php';
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-inverse">
-
-        <h2 class="title"><?= $viewListing['title'] ?></h2>
-
+      <div class="panel-body">
+      <h1 class="col-md-1 title"><?= $viewListing['title'] ?></h1>
+        <a href="contact.php" class="col-md-3 btn btn-default contactus">Contact Us about <?= $viewListing['title'] ?>!</a>
+        </div>
       </div>
     </div>
   </div>
@@ -87,21 +88,23 @@ require 'partials/navigation.php';
     <!-- Details column -->
     
 
-      <div class="row">
+      
       <div class="col-md-4">
 
         <div class="panel panel-inverse">
         <div class="panel-heading">
-        <div class="col-md-12">
-        <h3 class="title pull-left">Information:</h3> 
-        </div>
+          <div class="col-md-12">
+            <h3 class="title pull-left">Information:</h3> 
+          </div>
         </div>
         
 
           <div class="panel-body">
 
           
-            
+            <br>
+            <br>
+
             <div class="col-md-6 details">
               <strong>Location:</strong>
             </div>
@@ -260,7 +263,7 @@ require 'partials/navigation.php';
           </div>
         </div>
       </div>
-      </div>
+      
   </div>
 
 
@@ -274,7 +277,8 @@ require 'partials/navigation.php';
         <div class="col-md-12">
         <h2 class="title pull-left">Description</h2> 
         </div>
-        </div>
+        </div><br>
+        <br>
         
         <div class="panel-body">
         <div class="col-md-12">
@@ -299,11 +303,12 @@ require 'partials/navigation.php';
         <div class="panel-heading">
         <div class="col-md-12">
 
-          <h2 class="title pull-left">
+          <h3 class="title pull-left">
             Recent Comments
           </h3>
         </div>
-        </div>
+        </div><br>
+        <br>
 
         <div class="panel-body">
         <div class="col-md-12">
@@ -325,7 +330,7 @@ require 'partials/navigation.php';
 
                       <textarea name="content" class="form-control animated" placeholder="Leave a comment"></textarea>
                       <span class="text-danger"><?= !empty($errors['content']) ? $errors['content'] : ''  ?></span>
-                      <button class="btn btn-inverse pull-right" style="margin-top:10px" type="submit">
+                      <button class="btn btn-default pull-right search" style="margin-top:10px" type="submit">
                         Post
                       </button>
                     </form>
@@ -348,7 +353,7 @@ require 'partials/navigation.php';
                   <img src="<?= get_gravatar($comment['email']) ?>" class="comments-profile-photo">
                 </div>
                 <div class="media-body">
-                  <h4 class="media-heading"> <?= $comment['username'] ?>                   <br>
+                  <h4 class="media-heading"> <?= $comment['first_name'] ?>                   <br>
                     <div class="pull-right">
                       <small><?= formatTime(strtotime($comment['created_at'])) ?>
                       </small>
@@ -363,10 +368,8 @@ require 'partials/navigation.php';
                           <input name="_method" type="hidden" value="delete">
 
                           <input name="id" type="hidden" value="<?= $comment['id']?>">
-                          <input name="topic_id" value="<?= $viewListing['id'] ?>" type="hidden" >
-                          <button onclick="return confirm('Are you sure you want to delete this item?');" type="submit" class="btn btn-default btn-xs btn-danger">
-                            <i class="icon ion-ios-close-outline"></i>
-                          </button>
+                          <input name="listing_id" value="<?= $viewListing['id'] ?>" type="hidden" >
+                          <button onclick="return confirm('Are you sure you want to delete this item?');" type="submit" class="btn btn-default btn-danger">Delete</button>
 
                         </form>
                       <?php endif; ?>

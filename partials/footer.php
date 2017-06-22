@@ -3,6 +3,7 @@
 
     </div>
     <!-- /.container -->
+   
     <footer class="footer-inverse footer-fixed">
     <div class="row text-center"> 
       <a href="https://www.facebook.com/newlivesrescue/" target="_blank"><i class="fa fa-facebook fa-2x"></i></a>
@@ -11,10 +12,16 @@
     </div>  
     </footer>
     <footer class="footer footer-fixed-bottom">
-    <div class="col-md-6 footerdiv">
-    <p>Copyright &copy; Your Website 2014</p>
+    <div class="row text-center">
+    <h5 class="footerinfo">Copyright &copy; Who Rescued Who - Dog Rescue 2017</h5>
+    <h6 class="footerinfo">Website by Catherine Fromont</h6>
+    <img src="img/spcalogo.png" alt="sponsers" class="sponsers">
+    <img src="img/safelogo.png" alt="sponsers" class="sponsers">
     </div>
     </footer>
+
+    <!--  custom Javascript -->
+    <script src="js/main.js"></script>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
